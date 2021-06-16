@@ -36,7 +36,7 @@ class ShellExecutor {
     public isWindows: boolean = false;
 
     constructor() {
-        this.log = getLogger();
+        this.log = getLogger('ShellExecutor');
         this.sshClient = new Client();
     }
 
@@ -167,6 +167,16 @@ class ShellExecutor {
             throw new Error("tempPath must be initialized!");
         }
         return this.tempPath;
+    }
+
+    public async getCurrentPath(): Promise<string> {
+        const commandText = this.osCommands && this.osCommands.getCurrentPath();
+        const commandResult = await this.execute(commandText);
+        if (commandResult.exitCode == 0) {
+            return commandResult.stdout;
+        } else {
+            throw Error(commandResult.stderr);
+        }
     }
 
     public getRemoteScriptsPath(experimentId: string): string {

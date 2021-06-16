@@ -37,7 +37,7 @@ class NNITensorboardManager implements TensorboardManager {
     private nniManager: Manager;
 
     constructor() {
-        this.log = getLogger();
+        this.log = getLogger('NNITensorboardManager');
         this.tensorboardTaskMap = new Map<string, TensorboardTaskDetail>();
         this.setTensorboardVersion();
         this.nniManager = component.get(Manager);
@@ -116,7 +116,7 @@ class NNITensorboardManager implements TensorboardManager {
     private setTensorboardVersion(): void {
         let command = `python3 -c 'import tensorboard ; print(tensorboard.__version__)'`;
         if (process.platform === 'win32') {
-            command = `python -c 'import tensorboard ; print(tensorboard.__version__)'`;
+            command = `python -c "import tensorboard ; print(tensorboard.__version__)"`;
         }
         try {
             const tensorboardVersion = cp.execSync(command).toString();
